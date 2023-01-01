@@ -1,4 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next
+
+## introduction
+
+Working on a modern JavaScript application powered by React is
+awesome until you realize that there are a couple problems related to
+rendering all the content on the client-side.
+First, the page takes longer to become visible to the user, because
+before the content loads, all the JavaScript must load, and your
+application needs to run to determine what to show on the page.
+
+Next.js is one React framework to do all of this in a very simple way,
+but it's not limited to this. It's advertised by its creators as a zeroconfiguration, single-command toolchain for React apps.
+
+It provides a common structure that allows you to easily build a
+frontend React application, and transparently handles server-side
+rendering for you.
+
+## The main features provided by Next.js
+
+- Hot Code Reloading
+- Automatic Routing
+- Ecosystem Compatibility (JavaScript, Node, and React)
+- Single File Components
+- Server Rendering
+- Prefetching
+- Dynamic Components
+- Static Exports
+- TypeScript Support
+
+## Next.js vs Gatsby vs create-react-app
+
+Next.js, Gatsby, and create-react-app are amazing tools we can use to power our applications.
+They all have React under the hood, powering the entire development experience. They also abstract webpack and all those low level things that we used to configure manually in the good old days.
+create-react-app does not help you generate a server-side-rendered app easily. Anything that comes with it (SEO, speed…) is only provided by tools like Next.js and Gatsby.
+
+## When is Next.js better than Gatsby?
+
+They can both help with server-side rendering, but in 2 different ways.
+
+The end result using Gatsby is a static site generator, without a server. You build the site, and then you deploy the result of the build process statically on Netlify or another static hosting site.
+
+Next.js provides a backend that can server side render a response to request, allowing you to create a dynamic website, which means you will deploy it on a platform that can run Node.js.
+
+Next.js can generate a static site too, but I would not say it’s its main use case.
+
+If my goal was to build a static site, I’d have a hard time choosing and perhaps Gatsby has a better ecosystem of plugins, including many for blogging in particular.
+
+Gatsby is also heavily based on GraphQL, something you might really like or dislike depending on your opinions and needs.
+
+## Install prettier globally
+
+- Prettier is great to use with Visual Studio Code. Just download this extension. Pro tip: set it to only run Prettier when it detects a Prettier config file. Makes it so you never have to turn it off. In order to do that, set prettier.requireConfig to true and editor.formatOnSave to true.
+
+```bash
+npm install --global prettier
+
+```
+
+## How to install Next.js
+
+- Make sure that you have the latest version of Node 16 etc
+  [Node.js](https://nodejs.org/)
+- After you install Node.js, you will have the ** npm ** command available into your command line.
+
+## npm/Yarn scripts
+
+So it can be painful to try to remember the various CLI commands to run on your project. You can put CLI commands into it and then run the name of the tag and it'll run that script. Let's go see how that works. Put the following into your package.json.
+
+```bash
+yarn create next-app --typescript;
+npm install -D prettier@2.7.1 -D
+```
+
+```javascript
+"scripts": {
+    "format": "prettier --write \"src/**/*.{js,jsx}\"
+},
+```
 
 ## Getting Started
 
@@ -10,27 +88,79 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Adding Second page in the site.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+I want to add a second page to this website, a blog. It’s going to be served into /blog, and for the time being it will just contain a simple static page, just like our first index.js component:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Now the fact that the URL is **/blog** depends on just the filename, and its position under the pages folder.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+You can create a **pages/hey/ho page**, and that page will show up on the URL http://localhost:3000/hey/ho.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+What does not matter, for the URL purposes, is the component name inside the file.
 
-## Learn More
+Try going and viewing the source of the page, when loaded from the server it will list **/\_next/static/development/pages/blog.js** as one of the bundles loaded, and not **/\_next/static/development/pages/index.js** like in the home page. This is because thanks to automatic code splitting we don’t need the bundle that serves the home page. Just the bundle that serves the blog page.
 
-To learn more about Next.js, take a look at the following resources:
+## Linking the two pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```js
+<a href="/blog">Blog</a>
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Why? We technically can, of course, because this is the Web and on the Web things never break (that’s why we can still use the <marquee> tag. But one of the main benefits of using Next is that once a page is loaded, transitions to other page are very fast thanks to client-side rendering.
 
-## Deploy on Vercel
+If you use a plain a link:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```javascript
+const Index = () => (
+  <div>
+    <h1>Home page</h1>
+    <a href="/blog">Blog</a>
+  </div>
+);
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+export default Index;
+```
+
+The first time we load http://localhost:3000/ we get all the page bundles loaded:
+Now if you click the “Preserve log” button (to avoid clearing the Network panel), and click the “Blog” link, this is what happens:
+We got all that JavaScript from the server, again! But.. we don’t need all that JavaScript if we already got it. We’d just need the blog.js page bundle, the only one that’s new to the page.
+
+To fix this problem, we use a component provided by Next, called Link.
+
+We import it:
+
+```javascript
+import Link from "next/link";
+```
+
+and then we use it to wrap our link, like this:
+
+```javascript
+import Link from "next/link";
+
+const Index = () => (
+  <div>
+    <h1>Home page</h1>
+    <Link href="/blog">
+      <a>Blog</a>
+    </Link>
+  </div>
+);
+
+export default Index;
+```
+
+## Dynamic content with the router
+
+In the previous chapter we saw how to link the home to the blog page.
+
+A blog is a great use case for Next.js, one we’ll continue to explore in this chapter by adding blog posts.
+
+Blog posts have a dynamic URL. For example a post titled “Hello World” might have the URL **/blog/hello-world**. A post titled “My second post” might have the URL **/blog/my-second-post**.
+
+This content is dynamic, and might be taken from a database, markdown files or more.
+
+Next.js can serve dynamic content based on a dynamic URL. 
+
+We create a dynamic URL by creating a dynamic page with the **[]** syntax.
+
