@@ -28,6 +28,11 @@ rendering for you.
 - Static Exports
 - TypeScript Support
 
+## why would you use SSR?.
+
+Improved SEO
+Faster Load Times
+
 ## Next.js vs Gatsby vs create-react-app
 
 Next.js, Gatsby, and create-react-app are amazing tools we can use to power our applications.
@@ -160,7 +165,6 @@ Blog posts have a dynamic URL. For example a post titled “Hello World” might
 
 This content is dynamic, and might be taken from a database, markdown files or more.
 
-Next.js can serve dynamic content based on a dynamic URL. 
+Next.js can serve dynamic content based on a dynamic URL.
 
 We create a dynamic URL by creating a dynamic page with the **[]** syntax.
-
