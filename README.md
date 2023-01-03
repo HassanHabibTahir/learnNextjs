@@ -30,8 +30,8 @@ rendering for you.
 
 ## why would you use SSR?.
 
-Improved SEO
-Faster Load Times
+- Improved SEO
+- Faster Load Times
 
 ## Next.js vs Gatsby vs create-react-app
 
