@@ -15,6 +15,40 @@ but it's not limited to this. It's advertised by its creators as a zeroconfigur
 It provides a common structure that allows you to easily build a
 frontend React application, and transparently handles server-side
 rendering for you.
+What is Next.js
+First, let's talk about React. I like to think of React as a view library. Alone, you couldn't quickly build a modern app with React. You need routing, a build system, a way to style things, performance, etc 😰.
+
+---
+
+Next.js is a complete full-stack framework for modern apps that was created by the brilliant team at Vercel. React is used as the view library of choice. So if you know React, then Next.js will be very familiar. When building an app from scratch with React, you have so many decisions to make and so many choices. Next.js has well thought out conventions baked in that make these decisions for you. So in that way, it's very opinionated. It's the conventions that are the secret sauce, though. These opinions come from years of experience building production-ready React apps.
+
+Here are some of the highlights that you get for free:
+
+- Dev build system
+- Production build system
+- Prerendering
+- SSR
+- Build time
+- Static
+- Routing
+- API routes (wow, really?)
+
+## So here's what we'll be covering:
+
+- What is Next.js
+- How does Next.js compare to React.js
+- When would you use Next.js
+- Getting started
+- Creating pages and components
+- SEO
+- Static and dynamic routing
+- Navigating
+- Styling
+- API routes
+- Fetching data
+- Prerendering
+- Deployment
+- JAMstack
 
 ## The main features provided by Next.js
 
@@ -62,6 +96,28 @@ npm install --global prettier
 
 ```
 
+```javascript
+"scripts": {
+    "format": "prettier --write \"src/**/*.{js,jsx}\"
+},
+```
+
+## Do you only need a single page app?
+
+Use Create React App
+
+## Do you need a static site, like a blog, that's also a SPA?
+
+Use Next.js or Gatsby.
+
+## Need SSR, an API, and all the above?
+
+Use Next.js
+
+# Getting Started
+
+First, run the development server:
+
 ## How to install Next.js
 
 - Make sure that you have the latest version of Node 16 etc
@@ -77,23 +133,42 @@ yarn create next-app --typescript;
 npm install -D prettier@2.7.1 -D
 ```
 
-```javascript
-"scripts": {
-    "format": "prettier --write \"src/**/*.{js,jsx}\"
-},
-```
-
-## Getting Started
-
-First, run the development server:
-
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-## Adding Second page in the site.
+The still pretty easy way
+
+```bash
+yarn add next react react-dom
+
+```
+
+Next, we need to add some helpful scripts to our package.json
+
+```js
+"scripts": {
+  "dev": "next",
+  "build": "next build",
+  "start": "next start"
+}
+```
+
+### So what do these commands do?
+
+- next Will start Next.js in dev mode with hot reloading.
+
+- next build Will build your project and ready it for production.
+
+- next start Will start your built app, used in production.
+
+Next.js is a full-stack framework, by default, it needs to be hosted on a platform that supports Node.js
+
+# Routing with Pages
+
+<!-- ## Adding Second page in the site.
 
 I want to add a second page to this website, a blog. It’s going to be served into /blog, and for the time being it will just contain a simple static page, just like our first index.js component:
 
@@ -167,4 +242,4 @@ This content is dynamic, and might be taken from a database, markdown files or m
 
 Next.js can serve dynamic content based on a dynamic URL.
 
-We create a dynamic URL by creating a dynamic page with the **[]** syntax.
+We create a dynamic URL by creating a dynamic page with the **[]** syntax. -->
