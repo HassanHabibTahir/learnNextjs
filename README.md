@@ -168,78 +168,132 @@ Next.js is a full-stack framework, by default, it needs to be hosted on a platfo
 
 # Routing with Pages
 
-<!-- ## Adding Second page in the site.
+You don't need to interact with a router directly to create pages. Next.js has built on conventions to make creating routes as easy as creating a file
 
-I want to add a second page to this website, a blog. It’s going to be served into /blog, and for the time being it will just contain a simple static page, just like our first index.js component:
+To get started, create a directory on your called **/pages**. Next.js will associate any file in this directory as a route. The file names determine the route name or pattern, and whatever component is exported is the actual page.
 
-Now the fact that the URL is **/blog** depends on just the filename, and its position under the pages folder.
+Now let's create an index route by creating a file: **/pages/index.jsx.**
 
-You can create a **pages/hey/ho page**, and that page will show up on the URL http://localhost:3000/hey/ho.
+Next, let's create a component and export it:
 
-What does not matter, for the URL purposes, is the component name inside the file.
+## Folders and routes
 
-Try going and viewing the source of the page, when loaded from the server it will list **/\_next/static/development/pages/blog.js** as one of the bundles loaded, and not **/\_next/static/development/pages/index.js** like in the home page. This is because thanks to automatic code splitting we don’t need the bundle that serves the home page. Just the bundle that serves the blog page.
-
-## Linking the two pages
+To create a path like /project/settings we can use folders in our /pages directory. For our note taking app, we need the following routes for now:
 
 ```js
-<a href="/blog">Blog</a>
+index => /
+all notes => /notes
+one note => /notes/:id
 ```
 
-Why? We technically can, of course, because this is the Web and on the Web things never break (that’s why we can still use the <marquee> tag. But one of the main benefits of using Next is that once a page is loaded, transitions to other page are very fast thanks to client-side rendering.
+## Dynamic routes
 
-If you use a plain a link:
+Next.js makes it easy to create dynamic routes. Depending on if and how you want those pages to be prerendered will determine how you set them up. We're going to focus on creating dynamic routes that will not be built at build time but instead at run time on the server.
 
-```javascript
-const Index = () => (
-  <div>
-    <h1>Home page</h1>
-    <a href="/blog">Blog</a>
-  </div>
-);
+So to create a dynamic route, we can create a file that looks like this:
 
-export default Index;
+`````js
+[id].jsx;
+
+Where id is the name of the parameter. You can name it whatever you want. Those brackets are not a typo or a placeholder; that's the syntax to create a dynamic route using file name conventions in the pages directory. So let's create our note route:```
+
+```js
+pages
+  notes
+    index.jsx
+    [id].jsx
 ```
 
-The first time we load http://localhost:3000/ we get all the page bundles loaded:
-Now if you click the “Preserve log” button (to avoid clearing the Network panel), and click the “Blog” link, this is what happens:
-We got all that JavaScript from the server, again! But.. we don’t need all that JavaScript if we already got it. We’d just need the blog.js page bundle, the only one that’s new to the page.
+- We can access the id param inside our page component using the useRouter hook from the next/route module. This comes for free with Next.js.
 
-To fix this problem, we use a component provided by Next, called Link.
 
-We import it:
+```js
+import React from 'react'
+import { useRouter } from 'next/router'
 
-```javascript
-import Link from "next/link";
+export default () => {
+  const router = useRouter()
+  const { id }= router.query
+
+  return (
+    <h1>Note: {id} </h1>
+  )
+}
 ```
 
-and then we use it to wrap our link, like this:
+// ## Adding Second page in the site.
 
-```javascript
-import Link from "next/link";
+// I want to add a second page to this website, a blog. It’s going to be served into /blog, and for the time being it will just contain a simple static page, just like our first index.js component:
 
-const Index = () => (
-  <div>
-    <h1>Home page</h1>
-    <Link href="/blog">
-      <a>Blog</a>
-    </Link>
-  </div>
-);
+// Now the fact that the URL is **/blog** depends on just the filename, and its position under the pages folder.
 
-export default Index;
-```
+// You can create a **pages/hey/ho page**, and that page will show up on the URL http://localhost:3000/hey/ho.
 
-## Dynamic content with the router
+// What does not matter, for the URL purposes, is the component name inside the file.
 
-In the previous chapter we saw how to link the home to the blog page.
+// Try going and viewing the source of the page, when loaded from the server it will list **/\_next/static/development/pages/blog.js** as one of the bundles loaded, and not **/\_next/static/development/pages/index.js** like in the home page. This is because thanks to automatic code splitting we don’t need the bundle that serves the home page. Just the bundle that serves the blog page.
 
-A blog is a great use case for Next.js, one we’ll continue to explore in this chapter by adding blog posts.
+// ## Linking the two pages
 
-Blog posts have a dynamic URL. For example a post titled “Hello World” might have the URL **/blog/hello-world**. A post titled “My second post” might have the URL **/blog/my-second-post**.
+// ```js
+// <a href="/blog">Blog</a>
+// ````
 
-This content is dynamic, and might be taken from a database, markdown files or more.
+// Why? We technically can, of course, because this is the Web and on the Web things never break (that’s why we can still use the <marquee> tag. But one of the main benefits of using Next is that once a page is loaded, transitions to other page are very fast thanks to client-side rendering.
 
-Next.js can serve dynamic content based on a dynamic URL.
+// If you use a plain a link:
 
-We create a dynamic URL by creating a dynamic page with the **[]** syntax. -->
+// ```javascript
+// const Index = () => (
+//   <div>
+//     <h1>Home page</h1>
+//     <a href="/blog">Blog</a>
+//   </div>
+// );
+
+// export default Index;
+// ```
+
+// The first time we load http://localhost:3000/ we get all the page bundles loaded:
+// Now if you click the “Preserve log” button (to avoid clearing the Network panel), and click the “Blog” link, this is what happens:
+// We got all that JavaScript from the server, again! But.. we don’t need all that JavaScript if we already got it. We’d just need the blog.js page bundle, the only one that’s new to the page.
+
+// To fix this problem, we use a component provided by Next, called Link.
+
+// We import it:
+
+// ```javascript
+// import Link from "next/link";
+// ```
+
+// and then we use it to wrap our link, like this:
+
+// ```javascript
+// import Link from "next/link";
+
+// const Index = () => (
+//   <div>
+//     <h1>Home page</h1>
+//     <Link href="/blog">
+//       <a>Blog</a>
+//     </Link>
+//   </div>
+// );
+
+// export default Index;
+// ```
+
+// ## Dynamic content with the router
+
+// In the previous chapter we saw how to link the home to the blog page.
+
+// A blog is a great use case for Next.js, one we’ll continue to explore in this chapter by adding blog posts.
+
+// Blog posts have a dynamic URL. For example a post titled “Hello World” might have the URL **/blog/hello-world**. A post titled “My second post” might have the URL **/blog/my-second-post**.
+
+// This content is dynamic, and might be taken from a database, markdown files or more.
+
+// Next.js can serve dynamic content based on a dynamic URL.
+
+// We create a dynamic URL by creating a dynamic page with the **[]** syntax.
+`````
