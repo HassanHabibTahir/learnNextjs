@@ -1,6 +1,18 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-module.exports = nextConfig
+module.exports = (phase, { defaultConfig }) => {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    return {
+      ...defaultConfig,
+      /* development only config options here */
+      webpack: {
+        plugins: [new BundleAnalyzerPlugin()]
+
+      }
+    }
+  }
+  /* config options for all phases except development here */
+  return defaultConfig
+}

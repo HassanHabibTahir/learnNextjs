@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@theme-ui/presets": "^0.15.4",
+    "@types/theme-ui": "^0.6.0",
     "next": "12.2.2",
     "next-env": "^1.1.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "theme-ui": "^0.15.4",
+    "webpack-bundle-analyzer": "^4.7.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
